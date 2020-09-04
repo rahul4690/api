@@ -24,6 +24,6 @@ namespace Repository.Models.ViewModels
 
     public class AnalyticsObject
     {
-        public int userCount { get; set; }
+        public int totalUsersCount { get; set; }
     }
 }

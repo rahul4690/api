@@ -33,7 +33,7 @@ namespace ProjectAPI.Controllers
         public async Task<IActionResult> GetCount()
         {
             AnalyticsObject analyticsObject = new AnalyticsObject();
-            analyticsObject.userCount = await _repositoryWrapper.userRepository.GetUserCount();
+            analyticsObject.totalUsersCount = await _repositoryWrapper.userRepository.GetUserCount();
             return Ok(analyticsObject);
         }
 
