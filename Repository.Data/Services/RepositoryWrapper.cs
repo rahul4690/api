@@ -17,7 +17,7 @@ namespace Repository.Data.Services
         private ApplicationDbContext _applicationDbContext;
         private IApplicationUserRepository _applicationUserRepository;
         private IApplicationUserRoleRepository _applicationUserRoleRepository;
-
+       
         public IApplicationUserRepository userRepository
         {
             get
@@ -44,7 +44,7 @@ namespace Repository.Data.Services
 
         public void Save()
         {
-            _applicationDbContext.SaveChangesAsync();
+            _applicationDbContext.SaveChanges();
         }
     }
 }

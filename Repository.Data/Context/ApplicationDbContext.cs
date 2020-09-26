@@ -11,7 +11,8 @@ namespace Repository.Data.Context
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<ApplicationUserRole> ApplicationUserRoles { get; set; }
+        public DbSet<ApplicationUserModel> ApplicationUsers { get; set; }
+        public DbSet<ApplicationUserRoleModel> ApplicationUserRoles { get; set; }
+
     }
 }

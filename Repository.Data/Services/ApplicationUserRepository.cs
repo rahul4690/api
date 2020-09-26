@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Repository.Data.Services
 {
-    public class ApplicationUserRepository : DataAccess<ApplicationUser>, IApplicationUserRepository
+    public class ApplicationUserRepository : DataAccess<ApplicationUserModel>, IApplicationUserRepository
     {
         public ApplicationUserRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {

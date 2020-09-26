@@ -8,6 +8,7 @@ namespace Repository.Data.Services.IServices
     {
         IApplicationUserRepository userRepository { get; }
         IApplicationUserRoleRepository roleRepository { get; }
+
         void Save();
     }
 }

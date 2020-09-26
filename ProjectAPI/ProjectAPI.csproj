@@ -21,5 +21,9 @@
     <ProjectReference Include="..\Repository.Data\Repository.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utility\" />
+  </ItemGroup>
+
 
 </Project>

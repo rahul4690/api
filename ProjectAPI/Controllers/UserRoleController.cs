@@ -31,7 +31,7 @@ namespace ProjectAPI.Controllers
         [Route("getAllRoles")]
         public async Task<IActionResult> GetAllRoles()
         {
-            ResponseListObject<ApplicationUserRole> response = new ResponseListObject<ApplicationUserRole>();
+            ResponseListObject<ApplicationUserRoleModel> response = new ResponseListObject<ApplicationUserRoleModel>();
             try
             {
                 foreach(var item in await _repositoryWrapper.roleRepository.GetAll())

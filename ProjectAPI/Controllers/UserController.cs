@@ -41,7 +41,7 @@ namespace ProjectAPI.Controllers
         [Route("getAllUsers")]
         public async Task<IActionResult> GetAllUsers()
         {
-            ResponseListObject<ApplicationUser> response = new ResponseListObject<ApplicationUser>();
+            ResponseListObject<ApplicationUserModel> response = new ResponseListObject<ApplicationUserModel>();
             try
             {
                 foreach (var item in await _repositoryWrapper.userRepository.GetAll())
@@ -64,7 +64,7 @@ namespace ProjectAPI.Controllers
         [Route("getUserById")]
         public async Task<IActionResult> GetUserById(string id = null)
         {
-            ResponseListObject<ApplicationUser> response = new ResponseListObject<ApplicationUser>();
+            ResponseListObject<ApplicationUserModel> response = new ResponseListObject<ApplicationUserModel>();
             try
             {
                 if (string.IsNullOrEmpty(id))
@@ -95,7 +95,7 @@ namespace ProjectAPI.Controllers
             ResponseObject response = new ResponseObject();
             if (request != null)
             {
-                var data = _mapper.Map<ApplicationUser>(request);
+                var data = _mapper.Map<ApplicationUserModel>(request);
                 data.id = Guid.NewGuid();
                 data.createdDate = DateTime.Now;
                 await _repositoryWrapper.userRepository.Add(data);
@@ -119,7 +119,7 @@ namespace ProjectAPI.Controllers
             if (request != null)
             {
                 var findUser = await _repositoryWrapper.userRepository.GetById(request.id);
-                var data = _mapper.Map<ApplicationUserVM, ApplicationUser>(request, findUser);
+                var data = _mapper.Map<ApplicationUserVM, ApplicationUserModel>(request, findUser);
                 data.updatedDate = DateTime.Now;
                 data.createdDate = findUser.createdDate;
                 data.lastLogin = findUser.lastLogin;

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Data.Context;
 
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200913131645_migration_v2")]
+    partial class migration_v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace Repository.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +61,7 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRoleModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRole", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +75,7 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUserRoles");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.CategoryModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.Category", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -82,21 +84,18 @@ namespace Repository.Data.Migrations
                     b.Property<string>("categoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("createdBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("createdOn")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("icon")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.SubCategoryModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.SubCategory", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -105,8 +104,8 @@ namespace Repository.Data.Migrations
                     b.Property<Guid>("categoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("createdBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("createdOn")
                         .HasColumnType("datetime2");
@@ -121,18 +120,18 @@ namespace Repository.Data.Migrations
                     b.ToTable("SubCategories");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
                 {
-                    b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
+                    b.HasOne("Repository.Models.Models.ApplicationUserRole", "role")
                         .WithMany()
                         .HasForeignKey("roleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.SubCategoryModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.SubCategory", b =>
                 {
-                    b.HasOne("Repository.Models.Models.CategoryModel", "category")
+                    b.HasOne("Repository.Models.Models.Category", "category")
                         .WithMany()
                         .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Repository.Models.Models
 {
-    public class ApplicationUser
+    public class ApplicationUserModel
     {
         [Key]
         public Guid id { get; set; }
@@ -17,7 +17,7 @@ namespace Repository.Models.Models
         public Guid roleId { get; set; }
         
         [ForeignKey("roleId")]
-        public ApplicationUserRole role { get; set; }
+        public ApplicationUserRoleModel role { get; set; }
         public bool isActive { get; set; }
         public DateTime lastLogin { get; set; }
         public DateTime createdDate { get; set; }

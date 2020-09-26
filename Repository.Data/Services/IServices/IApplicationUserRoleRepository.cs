@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Repository.Data.Services.IServices
 {
-    public interface IApplicationUserRoleRepository : IDataAccess<ApplicationUserRole>
+    public interface IApplicationUserRoleRepository : IDataAccess<ApplicationUserRoleModel>
     {
     }
 }

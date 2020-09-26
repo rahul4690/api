@@ -24,20 +24,20 @@ namespace ProjectAPI
         {
             Configuration = configuration;
         }
-
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddCors();
+            services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration["ConnectionString:localDb"]));
             services.AddScoped(typeof(IDataAccess<>), typeof(DataAccess<>));
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddAutoMapper(typeof(AutoMapperConfig));
-
+          
             //JWT Authentication
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -95,9 +95,12 @@ namespace ProjectAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(x => x
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .SetIsOriginAllowed(origin => true) // allow any origin
+                 .AllowCredentials()); // allow credentials
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
            
@@ -115,10 +118,7 @@ namespace ProjectAPI
             });
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseCors(x => x
-               .AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+         
         }
     }
 }

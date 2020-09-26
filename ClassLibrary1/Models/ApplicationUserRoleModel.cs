@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Repository.Models.Models
 {
-    public class ApplicationUserRole
+    public class ApplicationUserRoleModel
     {
         [Key]
         public Guid id { get; set; }

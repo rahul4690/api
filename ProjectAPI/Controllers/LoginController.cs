@@ -38,7 +38,7 @@ namespace ProjectAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginVM loginVM)
         {
-            string response = string.Empty;
+            ResponseObject response = new ResponseObject();
             try
             {
                 if (loginVM != null)
@@ -46,11 +46,13 @@ namespace ProjectAPI.Controllers
                     var verifyUser = await AuthenticateUser(loginVM);
                     if (verifyUser != null && verifyUser.Item1)
                     {
-                        response = GenerateJSONWebToken(verifyUser.Item2);
+                        response.status = verifyUser.Item1;
+                        response.message = GenerateJSONWebToken(verifyUser.Item2);
                     }
                     else
                     {
-                        response = verifyUser.Item3;
+                        response.status = verifyUser.Item1;
+                        response.message = verifyUser.Item3;
                     }
                 }
             }
@@ -58,7 +60,7 @@ namespace ProjectAPI.Controllers
             {
                 _logger.LogError(ex.Message);
             }
-            return Ok(new { token = response });
+            return Ok(response);
         }
 
         private string GenerateJSONWebToken(LoginVM userInfo)
