@@ -2,7 +2,7 @@
 
 namespace Repository.Data.Migrations
 {
-    public partial class migration_v5 : Migration
+    public partial class migration_v3 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

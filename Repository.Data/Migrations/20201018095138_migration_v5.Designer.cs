@@ -10,8 +10,8 @@ using Repository.Data.Context;
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200716065241_migration_v1")]
-    partial class migration_v1
+    [Migration("20201018095138_migration_v5")]
+    partial class migration_v5
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Repository.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRoleModel", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -75,9 +75,43 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUserRoles");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Repository.Models.Models.CategoryModel", b =>
                 {
-                    b.HasOne("Repository.Models.Models.ApplicationUserRole", "role")
+                    b.Property<string>("categoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("categoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("categoryId");
+
+                    b.ToTable("CategoryModels");
+                });
+
+            modelBuilder.Entity("Repository.Models.Models.OTPModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("createdOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("otp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OtpModels");
+                });
+
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
+                {
+                    b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
                         .WithMany()
                         .HasForeignKey("roleId")
                         .OnDelete(DeleteBehavior.Cascade)

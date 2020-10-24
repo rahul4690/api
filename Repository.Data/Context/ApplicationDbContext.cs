@@ -13,6 +13,8 @@ namespace Repository.Data.Context
         }
         public DbSet<ApplicationUserModel> ApplicationUsers { get; set; }
         public DbSet<ApplicationUserRoleModel> ApplicationUserRoles { get; set; }
+        public DbSet<CategoryModel> CategoryModels { get; set; }
+        public DbSet<OTPModel> OtpModels { get; set; }
 
     }
 }

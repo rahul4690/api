@@ -20,6 +20,7 @@ namespace Repository.Models.ViewModels
     {
         public bool status { get; set; }
         public string message { get; set; }
+
     }
 
     public class AnalyticsObject
@@ -27,5 +28,4 @@ namespace Repository.Models.ViewModels
         public int totalUsersCount { get; set; }
     }
 
-  
 }

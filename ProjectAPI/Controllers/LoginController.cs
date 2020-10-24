@@ -1,16 +1,9 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Repository.Data.Services.IServices;
-using Repository.Models.Models;
 using Repository.Models.ViewModels;
 
 namespace ProjectAPI.Controllers
@@ -19,19 +12,13 @@ namespace ProjectAPI.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private IConfiguration _configuration;
         private ILogger<LoginController> _logger;
-        private IRepositoryWrapper _repositoryWrapper;
+        private ILoginRepository _loginRepository;
 
-        public LoginController(
-            IConfiguration configuration,
-            ILogger<LoginController> logger,
-            IRepositoryWrapper repositoryWrapper
-            )
+        public LoginController(ILogger<LoginController> logger, ILoginRepository loginRepository)
         {
-            _configuration = configuration;
             _logger = logger;
-            _repositoryWrapper = repositoryWrapper;
+            _loginRepository = loginRepository;
         }
 
         [AllowAnonymous]
@@ -43,11 +30,11 @@ namespace ProjectAPI.Controllers
             {
                 if (loginVM != null)
                 {
-                    var verifyUser = await AuthenticateUser(loginVM);
+                    var verifyUser = await _loginRepository.AuthenticateUser(loginVM);
                     if (verifyUser != null && verifyUser.Item1)
                     {
                         response.status = verifyUser.Item1;
-                        response.message = GenerateJSONWebToken(verifyUser.Item2);
+                        response.message = _loginRepository.GenerateJSONWebToken(verifyUser.Item2);
                     }
                     else
                     {
@@ -63,56 +50,26 @@ namespace ProjectAPI.Controllers
             return Ok(response);
         }
 
-        private string GenerateJSONWebToken(LoginVM userInfo)
+        [HttpPost]
+        [Route("changePassword")]
+        public async Task<IActionResult> ChangePassword(ChangePassword request)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var getKey = _configuration["Jwt:Key"];
-            var key = Encoding.ASCII.GetBytes(getKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-               {
-                    new Claim(ClaimTypes.Name, userInfo.userName),
-                    new Claim(ClaimTypes.Role, userInfo.role)
-               }),
-                Expires = DateTime.UtcNow.AddDays(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var createToken = tokenHandler.CreateToken(tokenDescriptor);
-            string _token = tokenHandler.WriteToken(createToken);
-            return _token;
+            return Ok(await _loginRepository.changePassword(request));
         }
 
-
-        private async Task<Tuple<bool, LoginVM, string>> AuthenticateUser(LoginVM loginVM)
+        [HttpGet]
+        [Route("getOtp/{userId}")]
+        public async Task<IActionResult> GetOtp(string userId)
         {
-            LoginVM response = new LoginVM();
-            bool status = false;
-            string message = string.Empty;
-            var findUser = await _repositoryWrapper.userRepository.GetAll(x => x.email.ToLower() == loginVM.userName.ToLower());
-            if (findUser.Count() > 0)
-            {
-                var verifyPassword = (findUser.FirstOrDefault().password == loginVM.password);
-                if (verifyPassword)
-                {
-                    status = true;
-                    response.userName = findUser.FirstOrDefault().email;
-                    response.password = findUser.FirstOrDefault().password;
-                    var findRoleId = await _repositoryWrapper.roleRepository.GetById(findUser.FirstOrDefault().roleId);
-                    response.role = findRoleId.roleName;
-                }
-                else
-                {
-                    status = false;
-                    message = "Incorrect Password";
-                }
-            }
-            else
-            {
-                status = false;
-                message = "User not found";
-            }
-            return Tuple.Create(status, response, message);
+            return Ok(await _loginRepository.getOtp(userId));
         }
+
+        [HttpPost]
+        [Route("forgetPassword")]
+        public async Task<IActionResult> ForgetPassword(ForgetPassword request)
+        {
+            return Ok(await _loginRepository.forgetPassword(request));
+        }
+
     }
 }

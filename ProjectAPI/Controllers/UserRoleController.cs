@@ -50,5 +50,22 @@ namespace ProjectAPI.Controllers
             return Ok(response);
         }
 
+        [HttpPost]
+        [Route("addRoles")]
+        public async Task<ActionResult> AddRoles(ApplicationUserRoleModel request)
+        {
+            try
+            {
+                request.id = Guid.NewGuid();
+                await _repositoryWrapper.roleRepository.Add(request);
+                _repositoryWrapper.Save();
+                return Ok(true);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

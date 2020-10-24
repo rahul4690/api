@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Data.Context;
 
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201018125518_migration_v6")]
+    partial class migration_v6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,24 +90,16 @@ namespace Repository.Data.Migrations
 
             modelBuilder.Entity("Repository.Models.Models.OTPModel", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("otp")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("createdOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("isVerified")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("otp")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("userId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("otp");
 
                     b.ToTable("OtpModels");
                 });

@@ -36,6 +36,7 @@ namespace ProjectAPI
                 options.UseSqlServer(Configuration["ConnectionString:localDb"]));
             services.AddScoped(typeof(IDataAccess<>), typeof(DataAccess<>));
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddAutoMapper(typeof(AutoMapperConfig));
           
             //JWT Authentication

@@ -10,8 +10,8 @@ using Repository.Data.Context;
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200922152317_migration_v5")]
-    partial class migration_v5
+    [Migration("20201018095056_migration_v4")]
+    partial class migration_v4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -77,50 +77,36 @@ namespace Repository.Data.Migrations
 
             modelBuilder.Entity("Repository.Models.Models.CategoryModel", b =>
                 {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("categoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("categoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("categoryId");
 
-                    b.Property<DateTime>("createdOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("icon")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Categories");
+                    b.ToTable("CategoryModels");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.SubCategoryModel", b =>
+            modelBuilder.Entity("Repository.Models.Models.OTPModel", b =>
                 {
-                    b.Property<Guid>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("categoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("createdOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("subCategoryName")
+                    b.Property<string>("otp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("categoryId");
+                    b.HasKey("Id");
 
-                    b.ToTable("SubCategories");
+                    b.ToTable("otpModels");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
@@ -128,15 +114,6 @@ namespace Repository.Data.Migrations
                     b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
                         .WithMany()
                         .HasForeignKey("roleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Repository.Models.Models.SubCategoryModel", b =>
-                {
-                    b.HasOne("Repository.Models.Models.CategoryModel", "category")
-                        .WithMany()
-                        .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

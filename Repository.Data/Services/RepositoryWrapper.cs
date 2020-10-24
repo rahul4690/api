@@ -1,9 +1,5 @@
 ﻿using Repository.Data.Context;
 using Repository.Data.Services.IServices;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Data.Services
 {
@@ -17,7 +13,9 @@ namespace Repository.Data.Services
         private ApplicationDbContext _applicationDbContext;
         private IApplicationUserRepository _applicationUserRepository;
         private IApplicationUserRoleRepository _applicationUserRoleRepository;
-       
+        private ICategoryRepository _categoryRepository;
+        private IOtpRepository _otpRepository;
+
         public IApplicationUserRepository userRepository
         {
             get
@@ -39,6 +37,30 @@ namespace Repository.Data.Services
                     _applicationUserRoleRepository = new ApplicationUserRoleRepository(_applicationDbContext);
                 }
                 return _applicationUserRoleRepository;
+            }
+        }
+
+        public ICategoryRepository categoryRepository
+        {
+            get
+            {
+                if(_categoryRepository == null)
+                {
+                    _categoryRepository = new CategoryRepository(_applicationDbContext);
+                }
+                return _categoryRepository;
+            }
+        }
+
+        public IOtpRepository otpRepository
+        {
+            get
+            {
+                if (_otpRepository == null)
+                {
+                    _otpRepository = new OtpRepository(_applicationDbContext);
+                }
+                return _otpRepository;
             }
         }
 

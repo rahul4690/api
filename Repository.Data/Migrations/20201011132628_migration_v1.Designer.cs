@@ -10,8 +10,8 @@ using Repository.Data.Context;
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200913150129_migration_v3")]
-    partial class migration_v3
+    [Migration("20201011132628_migration_v1")]
+    partial class migration_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace Repository.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRole", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserRoleModel", b =>
                 {
                     b.Property<Guid>("id")
                         .ValueGeneratedOnAdd()
@@ -75,65 +75,11 @@ namespace Repository.Data.Migrations
                     b.ToTable("ApplicationUserRoles");
                 });
 
-            modelBuilder.Entity("Repository.Models.Models.Category", b =>
+            modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
                 {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("categoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("createdOn")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Repository.Models.Models.SubCategory", b =>
-                {
-                    b.Property<Guid>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("categoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("createdBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("createdOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("subCategoryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("categoryId");
-
-                    b.ToTable("SubCategories");
-                });
-
-            modelBuilder.Entity("Repository.Models.Models.ApplicationUser", b =>
-                {
-                    b.HasOne("Repository.Models.Models.ApplicationUserRole", "role")
+                    b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
                         .WithMany()
                         .HasForeignKey("roleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Repository.Models.Models.SubCategory", b =>
-                {
-                    b.HasOne("Repository.Models.Models.Category", "category")
-                        .WithMany()
-                        .HasForeignKey("categoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

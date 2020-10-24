@@ -17,4 +17,38 @@ namespace Repository.Models.ViewModels
         public DateTime createdDate { get; set; }
         public DateTime updatedDate { get; set; }
     }
+
+    public class ChangePassword
+    {
+        public Guid id { get; set; }
+        public string oldPassword { get; set; }
+        public string newPassword { get; set; }
+        public string confirmPassword { get; set; }
+
+    }
+
+    public class Otp
+    {
+        public string otp { get; set; }
+    }
+
+    public class OtpResponseObject
+    {
+        public OtpResponseObject()
+        {
+            otp = new Otp();
+        }
+        public bool status { get; set; }
+        public string message { get; set; }
+        public Otp otp { get; set; }
+
+    }
+
+    public class ForgetPassword
+    {
+        public Guid userId { get; set; }
+        public string newPassword { get; set; }
+        public string otp { get; set; }
+    }
+
 }

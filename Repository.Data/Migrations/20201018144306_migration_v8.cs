@@ -2,21 +2,22 @@
 
 namespace Repository.Data.Migrations
 {
-    public partial class migration_v4 : Migration
+    public partial class migration_v8 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "icon",
-                table: "Categories",
-                nullable: true);
+            migrationBuilder.AddColumn<bool>(
+                name: "isVerified",
+                table: "OtpModels",
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "icon",
-                table: "Categories");
+                name: "isVerified",
+                table: "OtpModels");
         }
     }
 }
