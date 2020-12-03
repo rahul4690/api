@@ -8,12 +8,15 @@ namespace Repository.Models.ViewModels
     {
         public ResponseListObject()
         {
-            loadData = new List<T>();
+            data = new List<T>();
         }
         public bool status { get; set; }
         public string message { get; set; }
-    
-        public IList<T> loadData { get; set; }
+        public int pageSize { get; set; }
+        public int pageNumber { get; set; }
+        public int totalCount { get; set; }
+        public int totalPages { get; set; }
+        public IList<T> data { get; set; }
     }
 
     public class ResponseObject

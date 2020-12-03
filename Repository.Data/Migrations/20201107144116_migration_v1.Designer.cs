@@ -10,8 +10,8 @@ using Repository.Data.Context;
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201018094210_migration_v3")]
-    partial class migration_v3
+    [Migration("20201107144116_migration_v1")]
+    partial class migration_v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -58,7 +58,7 @@ namespace Repository.Data.Migrations
 
                     b.HasIndex("roleId");
 
-                    b.ToTable("ApplicationUsers");
+                    b.ToTable("tbl_application_users");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.ApplicationUserRoleModel", b =>
@@ -72,26 +72,56 @@ namespace Repository.Data.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("ApplicationUserRoles");
+                    b.ToTable("tbl_application_users_role");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.CategoryModel", b =>
                 {
-                    b.Property<string>("categoryId")
+                    b.Property<string>("id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("categoryName")
+                    b.Property<string>("categoryImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("categoryId");
+                    b.Property<string>("categosryName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("CategoryModels");
+                    b.Property<DateTime>("createdDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("id");
+
+                    b.ToTable("tbl_category");
+                });
+
+            modelBuilder.Entity("Repository.Models.Models.OTPModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("createdOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("isVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("otp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("userId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("id");
+
+                    b.ToTable("tbl_otp");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
                 {
                     b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
-                        .WithMany()
+                        .WithMany("applicationUsers")
                         .HasForeignKey("roleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

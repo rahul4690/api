@@ -10,8 +10,8 @@ using Repository.Data.Context;
 namespace Repository.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201018095138_migration_v5")]
-    partial class migration_v5
+    [Migration("20201108124400_migration_v4")]
+    partial class migration_v4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,38 +27,94 @@ namespace Repository.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("aboutMe")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
+                    b.Property<string>("address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("city")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
+                    b.Property<string>("country")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
                     b.Property<DateTime>("createdDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
+                    b.Property<string>("image")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.Property<bool>("isActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<DateTime>("lastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("mobile")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20)
+                        .HasDefaultValue("");
 
                     b.Property<string>("name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
 
                     b.Property<string>("password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("pincode")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
                     b.Property<Guid>("roleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("state")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50)
+                        .HasDefaultValue("");
+
                     b.Property<DateTime>("updatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
                     b.HasIndex("roleId");
 
-                    b.ToTable("ApplicationUsers");
+                    b.ToTable("tbl_application_users");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.ApplicationUserRoleModel", b =>
@@ -72,25 +128,34 @@ namespace Repository.Data.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("ApplicationUserRoles");
+                    b.ToTable("tbl_application_users_role");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.CategoryModel", b =>
                 {
-                    b.Property<string>("categoryId")
+                    b.Property<string>("categoryCode")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("categoryImage")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("categoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("categoryId");
+                    b.Property<DateTime>("createdDate")
+                        .HasColumnType("datetime2");
 
-                    b.ToTable("CategoryModels");
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("categoryCode");
+
+                    b.ToTable("tbl_category");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.OTPModel", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -98,21 +163,24 @@ namespace Repository.Data.Migrations
                     b.Property<DateTime>("createdOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("isVerified")
+                        .HasColumnType("bit");
+
                     b.Property<string>("otp")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("userId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
-                    b.ToTable("OtpModels");
+                    b.ToTable("tbl_otp");
                 });
 
             modelBuilder.Entity("Repository.Models.Models.ApplicationUserModel", b =>
                 {
                     b.HasOne("Repository.Models.Models.ApplicationUserRoleModel", "role")
-                        .WithMany()
+                        .WithMany("applicationUsers")
                         .HasForeignKey("roleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

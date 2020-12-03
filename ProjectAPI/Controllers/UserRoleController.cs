@@ -29,14 +29,15 @@ namespace ProjectAPI.Controllers
 
         [HttpGet]
         [Route("getAllRoles")]
-        public async Task<IActionResult> GetAllRoles()
+        public async Task<IActionResult> GetAllRoles([FromQuery] PaginationVM pagination)
         {
-            ResponseListObject<ApplicationUserRoleModel> response = new ResponseListObject<ApplicationUserRoleModel>();
+            ResponseListObject<ApplicationUserRolesVM> response = new ResponseListObject<ApplicationUserRolesVM>();
             try
             {
-                foreach(var item in await _repositoryWrapper.roleRepository.GetAll())
+                foreach(var item in await _repositoryWrapper.roleRepository.GetAll(null, null, pagination))
                 {
-                    response.loadData.Add(item);
+                    var data = _mapper.Map<ApplicationUserRolesVM>(item);
+                    response.data.Add(data);
                 }
                 response.status = true;
                 response.message = "Success";
@@ -45,19 +46,20 @@ namespace ProjectAPI.Controllers
             {
                 _logger.LogError(ex.StackTrace);
                 response.status = false;
-                response.message = "Failure";
+                response.message = "|Messgae: " + ex.Message;
             }
             return Ok(response);
         }
 
         [HttpPost]
         [Route("addRoles")]
-        public async Task<ActionResult> AddRoles(ApplicationUserRoleModel request)
+        public async Task<ActionResult> AddRoles(ApplicationUserRolesVM request)
         {
             try
             {
-                request.id = Guid.NewGuid();
-                await _repositoryWrapper.roleRepository.Add(request);
+                var data = _mapper.Map<ApplicationUserRoleModel>(request);
+                data.id = Guid.NewGuid();
+                await _repositoryWrapper.roleRepository.Add(data);
                 _repositoryWrapper.Save();
                 return Ok(true);
             }

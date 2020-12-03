@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectAPI.Filters;
 using Repository.Data.AutoMapper;
 using Repository.Data.Context;
 using Repository.Data.Services;
@@ -24,12 +25,12 @@ namespace ProjectAPI
         {
             Configuration = configuration;
         }
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<MyActionFilter>();
             services.AddCors();
             services.AddControllers();
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -99,8 +100,9 @@ namespace ProjectAPI
             app.UseCors(x => x
                  .AllowAnyMethod()
                  .AllowAnyHeader()
-                 .SetIsOriginAllowed(origin => true) // allow any origin
-                 .AllowCredentials()); // allow credentials
+                 .AllowAnyOrigin());
+                 //.SetIsOriginAllowed(origin => true) // allow any origin
+                 //.AllowCredentials()); // allow credentials
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

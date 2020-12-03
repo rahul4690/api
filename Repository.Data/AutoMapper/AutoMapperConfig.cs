@@ -14,7 +14,13 @@ namespace Repository.Data.AutoMapper
         void Mapping()
         {
             CreateMap<ApplicationUserVM, ApplicationUserModel>();
+            CreateMap<ApplicationUserModel, ApplicationUserVM>();
+
             CreateMap<ApplicationUserRolesVM, ApplicationUserRoleModel>();
+            CreateMap<ApplicationUserRoleModel, ApplicationUserRolesVM>();
+
+            CreateMap<CategoryModel, CategoryVM>();
+            CreateMap<CategoryVM, CategoryModel>();
         }
     }
 }

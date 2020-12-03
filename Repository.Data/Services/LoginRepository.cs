@@ -48,7 +48,7 @@ namespace Repository.Data.Services
             LoginVM response = new LoginVM();
             bool status = false;
             string message = string.Empty;
-            var findUser = await _repositoryWrapper.userRepository.GetAll(x => x.email.ToLower() == loginVM.userName.ToLower());
+            var findUser = await _repositoryWrapper.userRepository.GetAll(x => x.email.ToLower() == loginVM.userName.ToLower() || x.username.ToLower() == loginVM.userName.ToLower());
             if (findUser.Count() > 0)
             {
                 var verifyPassword = (findUser.FirstOrDefault().password == loginVM.password);

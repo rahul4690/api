@@ -6,11 +6,10 @@ using System.Text;
 
 namespace Repository.Models.Models
 {
+    [Table("tbl_otp")]
     public class OTPModel
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public int Id { get; set; }
+        public int id { get; set; }
         public string otp { get; set; }
         public Guid userId { get; set; }
         public DateTime createdOn { get; set; }
